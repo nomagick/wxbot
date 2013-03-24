@@ -17,6 +17,7 @@ def wxreply():
 	request= wxclass.WxRequest(xmlstr)
 	print (request)
 	response= hubfunc(request)
+	print(response)
 	debugstr= bottle.template(response[0],data=response[1])
 	print(debugstr)
 	return debugstr
