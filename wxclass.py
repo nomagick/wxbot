@@ -1,5 +1,6 @@
-import xml.etree.ElementTree as ET
+import lxml.etree as ET
 from hashlib import sha1
+from copy import deepcopy
 
 from config import cfgdict
 import wxapi
@@ -13,21 +14,73 @@ class WxError(Exception):
 
 class WxRequest(object):
 	"""docstring for WxRequest"""
-
-	def __init__(self, rqtype, xmlstr):
+	def __init__(self, xmlinf, fromstr=True):
 		super(WxRequest, self).__init__()
-		self.rqtype= rqtype
-		self.api= wxapi.request[rqtype]
-		self.keys= [x[0] for x in self.api]
-		self.argdict= {x:y for x,y in zip((key for key in self.keys),(xmlobj.text for xmlobj in ET.fromstring(xmlstr))) if y not in ['\n',None,'\r\n']}
-		self.argdict={}
+		if fromstr:
+			xmlobj= ET.fromstring(xmlinf)
+		else:
+			xmlobj= ET.parse(xmlinf)
+#		self.type= xmlobj.find('MsgType').text
+#		self.api= wxapi.request[self.type]
+#		self.keys= [x[0] for x in self.api]
+#		self.argdict= {x:y for x,y in zip((key for key in self.keys),(xmlobj.text for xmlobj in ET.fromstring(xmlinf))) if y not in ['\n',None,'\r\n']}
+		self.argdict= WxRequest._parse(xmlobj)
 
-	def _digest(self, xmlobj, target=self.api):
-		result={}
-		for item in target:
-			if type(item[1]) == list:
-				result[item[0]]= [self._digest(x,item[1])]
+	@staticmethod
+	def _parse(xmlobj):
+		tmpdict={}
+		tagbuff
+		for elem in xmlobj:
+			if len(elem):
+				tmpdict[elem.tag]= WxRequest.parse(elem)
+			else:
+				tmpdict[elem.tag]= elem.text
+		return tmpdict
 
+	def __getitem__(self, keystr):
+		i=self.argdict
+		for key in keystr.rsplit('.'):
+			i=i[key]
+		return i
+
+	def __getattr__(self, key):
+		return self[key]
+
+#class WxResponse(object):
+#	"""docstring for WxResponse"""
+#	_apicache={}
+#	@staticmethod
+#	def _mkcache(templet, rootelm='xml'):
+#		xmlparser= ET.XMLParser(strip_cdata=False)
+#		for msgtype,templet in wxapi.responses.items():
+#			WxResponse._apicache[msgtype]= {rootelm: ET.fromstring(templet, xmlparser)}
+#			for xmlobj in WxResponse._apicache[msgtype][rootelm].iterdescendants():
+#				if len(xmlobj):
+#					WxResponse._apicache[msgtype][xmlobj.tag]= deepcopy(xmlobj)
+#
+#
+# 	def __getitem__(self, keystr):
+#		i=self.xmlobj
+#		for key in keystr.rsplit('.'):
+#			i= i.find(key)
+#		return i.text
+#
+#	def __setitem__(self, keystr, value):
+#		i=self.xmlobj
+#		for key in keystr.rsplit('.'):
+#			i= i.find(key)
+#		i.text= value
+#
+#	def __init__(self, rstype):
+#		super(WxResponse, self).__init__()
+#		self.type = rstype
+#		self.xmlobj= deepcopy(WxResponse._apicache[rstype])
+#
+#
+#
+#	def _autofill(self):
+#		self.argdict[]
+		
 
 class WxAuth(object):
 	"""docstring for WxAuth"""
@@ -37,17 +90,17 @@ class WxAuth(object):
 	def __init__(self, arg, config=cfgdict):
 		super(WxAuth, self).__init__()
 		self.arg = arg
-		self.arg.update(cfgdict)
+		self.arg.update(config)
 		self.checkarg = tuple(self.arg[x] for x in wxapi.auth['check'][1])
 		self.sendbackarg = tuple(self.arg[x] for x in wxapi.auth['sendback'][1])
 
-	def act(self):
+	def reply(self):
 		try:
-			if self.check(self.checkarg)
+			if self.check(self.checkarg):
 				return self.sendback(self.sendbackarg)
 			else:
 				return False
-		except Exception e:
+		except Exception as e:
 			print('Exception while calculating signature !')
 			raise e
 
