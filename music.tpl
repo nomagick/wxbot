@@ -1,7 +1,3 @@
-<xml>
-<ToUserName><![CDATA[{{data['to']}}]]></ToUserName>
-<FromUserName><![CDATA[{{data['from']}}]]></FromUserName>
-<CreateTime>{{int(time())}}</CreateTime>
 <MsgType><![CDATA[music]]></MsgType>
 <Music>
 <Title><![CDATA[{{data['title']}}]]></Title>
@@ -9,5 +5,4 @@
 <MusicUrl><![CDATA[{{data['lqurl']}}]]></MusicUrl>
 <HQMusicUrl><![CDATA[{{data['hqurl']}}]]></HQMusicUrl>
 </Music>
-<FuncFlag>{{data['flag']}}</FuncFlag>
-</xml>
+%rebase common, data=data

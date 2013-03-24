@@ -1,4 +1,3 @@
-from time import time
 import bottle
 
 import wxclass
