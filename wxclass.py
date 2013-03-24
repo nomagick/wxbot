@@ -29,7 +29,6 @@ class WxRequest(object):
 	@staticmethod
 	def _parse(xmlobj):
 		tmpdict={}
-		tagbuff
 		for elem in xmlobj:
 			if len(elem):
 				tmpdict[elem.tag]= WxRequest.parse(elem)
