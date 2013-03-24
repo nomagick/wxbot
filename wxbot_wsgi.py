@@ -17,7 +17,7 @@ def wxreply():
 	xmlstr= bottle.request.body.read().decode()
 	request= wxclass.WxRequest(xmlstr)
 	response= hubfunc(request)
-	return bottle.template(response[0],response[1])
+	return bottle.template(response[0],data=response[1])
 
 #bottle.debug(True)
 if __name__ == '__main__':
