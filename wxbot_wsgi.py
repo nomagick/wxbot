@@ -10,7 +10,7 @@ def wxauth():
 #	authobj= wxclass.WxAuth(argdict)
 #	sendback= authobj.reply()
 #	return sendback
-	return wxclass.WxAuth(bottle.request.forms.decode()).reply()
+	return wxclass.WxAuth(bottle.request.GET.decode()).reply()
 
 @bottle.post('/wxbot.xml')
 def wxreply():

@@ -84,8 +84,8 @@ class WxRequest(object):
 
 class WxAuth(object):
 	"""docstring for WxAuth"""
-	check = wxapi.auth['check'][0]
-	sendback = wxapi.auth['sendback'][0]
+	_check = wxapi.auth['check'][0]
+	_sendback = wxapi.auth['sendback'][0]
 
 	def __init__(self, arg, config=cfgdict):
 		super(WxAuth, self).__init__()
@@ -95,12 +95,7 @@ class WxAuth(object):
 		self.sendbackarg = tuple(self.arg[x] for x in wxapi.auth['sendback'][1])
 
 	def reply(self):
-		try:
-			if self.check(self.checkarg):
-				return self.sendback(self.sendbackarg)
-			else:
-				return False
-		except Exception as e:
-			print('Exception while calculating signature !')
-			raise e
-
+		if WxAuth._check(self.checkarg):
+			return WxAuth._sendback(self.sendbackarg)
+		else:
+			return False

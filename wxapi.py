@@ -13,7 +13,7 @@ auth = {
 	],
 	
 	'check' : (lambda tpl: tpl[0]==sha1(''.join(sorted([tpl[1],tpl[2],tpl[3]])).encode()).hexdigest(), ('signature','timestamp','nonce','token') ),
-	'sendback' : (lambda tpl: tpl[0], ('echostr')),
+	'sendback' : (lambda tpl: tpl[0], ('echostr',)),
 
 }
 
