@@ -10,4 +10,4 @@
 </item>
 %end
 </Articles>
-%rebase common, data=data
+%rebase common data=data

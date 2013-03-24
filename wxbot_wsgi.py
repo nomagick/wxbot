@@ -22,8 +22,17 @@ def wxreply():
 	print(debugstr)
 	return debugstr
 
+#@bottle.get('/debug')
+#def debug():
+#	rsdata= {
+#		'to': 'FromUserName',
+#		'from': 'ToUserName',
+#		'content': 'miao//喵',
+#		'flag': 0,
+#	}
+#	return bottle.template('text',data=rsdata)
 #bottle.debug(True)
 if __name__ == '__main__':
-	bottle.run(host='0.0.0.0', port=80)
+	bottle.run(host='0.0.0.0', port=8080)
 else:
 	application=bottle.app()

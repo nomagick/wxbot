@@ -5,4 +5,4 @@
 <MusicUrl><![CDATA[{{data['lqurl']}}]]></MusicUrl>
 <HQMusicUrl><![CDATA[{{data['hqurl']}}]]></HQMusicUrl>
 </Music>
-%rebase common, data=data
+%rebase common data=data
