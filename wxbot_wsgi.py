@@ -15,8 +15,11 @@ def wxauth():
 def wxreply():
 	xmlstr= bottle.request.body.read().decode()
 	request= wxclass.WxRequest(xmlstr)
+	print (request)
 	response= hubfunc(request)
-	return bottle.template(response[0],data=response[1])
+	debugstr= bottle.template(response[0],data=response[1])
+	print(debugstr)
+	return debugstr
 
 #bottle.debug(True)
 if __name__ == '__main__':
