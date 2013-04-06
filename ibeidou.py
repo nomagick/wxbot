@@ -3,10 +3,10 @@ from pymongo import MongoClient as ndb
 import datetime
 
 SQLcfg= {
-	'user': 'ibeidou',
-	'password': '429233',
-	'host': 'localhost',
-	'database': 'ibeidou',
+	'user': 'wxbot',
+	'password': 'beidou7stars',
+	'host': 'ibeidou.net',
+	'database': 'ibeidoun_beidou',
 }
 
 NOSQLcfg= {
