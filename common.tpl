@@ -1,8 +1,8 @@
 %from time import time
 <xml>
-<ToUserName><![CDATA[{{data['to']}}]]></ToUserName>
-<FromUserName><![CDATA[{{data['from']}}]]></FromUserName>
+<ToUserName><![CDATA[{{data['TooUserName']}}]]></ToUserName>
+<FromUserName><![CDATA[{{data['FromUserName']}}]]></FromUserName>
 <CreateTime>{{int(time())}}</CreateTime>
 %include
-<FuncFlag>{{data['flag']}}</FuncFlag>
+<FuncFlag>{{data['FuncFlag']}}</FuncFlag>
 </xml> 

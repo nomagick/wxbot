@@ -92,9 +92,14 @@ class WxAuth(object):
 		self.arg.update(config)
 		self.checkarg = tuple(self.arg[x] for x in wxapi.auth['check'][1])
 		self.sendbackarg = tuple(self.arg[x] for x in wxapi.auth['sendback'][1])
+		self.ok= bool(WxAuth._check(self.checkarg))
+		self.res= WxAuth._sendback(self.sendbackarg)
+
+	def __bool__(self):
+		return self.ok
 
 	def reply(self):
-		if WxAuth._check(self.checkarg):
-			return WxAuth._sendback(self.sendbackarg)
+		if self.ok:
+			return self.res
 		else:
 			return False

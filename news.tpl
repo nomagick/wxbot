@@ -1,12 +1,12 @@
 <MsgType><![CDATA[news]]></MsgType>
-<ArticleCount>{{len(data['articles'])}}</ArticleCount>
+<ArticleCount>{{len(data['Articles'])}}</ArticleCount>
 <Articles>
-%for article in data['articles']
+%for article in data['Articles']
 <item>
-<Title><![CDATA[{{article['title']}}]]></Title> 
-<Description><![CDATA[{{article['description']}}]]></Description>
-<PicUrl><![CDATA[{{article['picurl']}}]]></PicUrl>
-<Url><![CDATA[{{article['url']}}]]></Url>
+<Title><![CDATA[{{article['Title']}}]]></Title> 
+<Description><![CDATA[{{article['Description']}}]]></Description>
+<PicUrl><![CDATA[{{article['PicUrl']}}]]></PicUrl>
+<Url><![CDATA[{{article['Url']}}]]></Url>
 </item>
 %end
 </Articles>

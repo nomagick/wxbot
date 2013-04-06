@@ -15,11 +15,8 @@ def wxauth():
 def wxreply():
 	xmlstr= bottle.request.body.read().decode()
 	request= wxclass.WxRequest(xmlstr)
-	print (request)
 	response= hubfunc(request)
-	print(response)
 	debugstr= bottle.template(response[0],data=response[1])
-	print(debugstr)
 	return debugstr
 
 #@bottle.get('/debug')
@@ -30,8 +27,9 @@ def wxreply():
 #	print(debugstr)
 #	return debugstr
 
-bottle.debug(True)
+
 if __name__ == '__main__':
+	bottle.debug(True)
 	bottle.run(host='0.0.0.0', port=8080)
 else:
 	application=bottle.app()
