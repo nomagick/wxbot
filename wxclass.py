@@ -1,9 +1,8 @@
 import lxml.etree as ET
 from hashlib import sha1
 from copy import deepcopy
+from hashlib import sha1
 
-from config import cfgdict
-import wxapi
 
 class WxError(Exception):
 	"""docstring for WxError"""
@@ -83,23 +82,21 @@ class WxRequest(object):
 
 class WxAuth(object):
 	"""docstring for WxAuth"""
-	_check = wxapi.auth['check'][0]
-	_sendback = wxapi.auth['sendback'][0]
+	_check = lambda argd: argd['signature']==sha1(''.join(sorted([argd['token'],argd['timestamp'],argd['nonce']])).encode()).hexdigest()
+	_sendback = lambda argd: argd['echostr']
 
-	def __init__(self, arg, config=cfgdict):
+	def __init__(self, arg, **additional):  #You should always give a token='xxxx' pram !
 		super(WxAuth, self).__init__()
 		self.arg = arg
-		self.arg.update(config)
-		self.checkarg = tuple(self.arg[x] for x in wxapi.auth['check'][1])
-		self.sendbackarg = tuple(self.arg[x] for x in wxapi.auth['sendback'][1])
-		self.ok= bool(WxAuth._check(self.checkarg))
-		self.res= WxAuth._sendback(self.sendbackarg)
+		self.arg.update(additional)
+		self.ok= bool(WxAuth._check(self.arg))
+		
 
 	def __bool__(self):
 		return self.ok
 
 	def reply(self):
 		if self.ok:
-			return self.res
+			return WxAuth._sendback(self.arg)
 		else:
-			return False
+			return 'FUCK YOU'

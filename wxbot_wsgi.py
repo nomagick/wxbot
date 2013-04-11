@@ -9,15 +9,14 @@ def wxauth():
 #	authobj= wxclass.WxAuth(argdict)
 #	sendback= authobj.reply()
 #	return sendback
-	return wxclass.WxAuth(bottle.request.GET.decode()).reply()
+	return wxclass.WxAuth(bottle.request.GET.decode(), token='jjjjjjj').reply()
 
 @bottle.post('/wxbot.xml')
 def wxreply():
 	xmlstr= bottle.request.body.read().decode()
 	request= wxclass.WxRequest(xmlstr)
 	response= hubfunc(request)
-	debugstr= bottle.template(response[0],data=response[1])
-	return debugstr
+	return bottle.template(response['MsgType'],data=response)
 
 #@bottle.get('/debug')
 #def debug():
