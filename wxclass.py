@@ -13,8 +13,11 @@ class WxError(Exception):
 
 class WxRequest(object):
 	"""docstring for WxRequest"""
-	def __init__(self, xmlinf, fromstr=True):
+	def __init__(self, xmlinf, fromstr=True, debug=False):
 		super(WxRequest, self).__init__()
+		if debug:
+			self.argdict= xmlinf
+			return None
 		if fromstr:
 			xmlobj= ET.fromstring(xmlinf)
 		else:
@@ -41,8 +44,11 @@ class WxRequest(object):
 			i=i[key]
 		return i
 
+	def __setitem__(self, key, value):
+		self.argdict[key]= value
+
 	def __getattr__(self, key):
-		return self[key]
+		return self.argdict[key]
 
 #class WxResponse(object):
 #	"""docstring for WxResponse"""

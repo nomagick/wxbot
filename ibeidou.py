@@ -63,7 +63,7 @@ class BeidouTags(object):
 			LEFT JOIN wp_postmeta as pic ON pic.post_id = wp_posts.id AND pic.meta_key = 'newheadarticleimage' 
 			LEFT JOIN wp_postmeta as txt ON txt.post_id = wp_posts.id AND txt.meta_key = 'featuredtext'
 			WHERE
-			(wp_posts.post_status = 'publish' AND wp_posts.post_type =  'post' )
+			(wp_posts.post_status = 'publish' AND (wp_posts.post_type = 'post' OR wp_posts.post_type= 'page'))
 			{}\
 			ORDER BY wp_posts.post_date_gmt DESC;'''
 		modes={
@@ -148,9 +148,15 @@ class BeidouTags(object):
 		try:
 			tmplist= self.query(wxreq['Content'])
 		except :
-			return {'TooUserName': wxreq['FromUserName'],'FromUserName': wxreq['ToUserName'], 'MsgType': 'text', 'Content': '真不好意思，服务器给您跪了，可能您的调戏方式不对，请重新调戏或直接访问北斗网  http://ibeidou.net' ,'FuncFlag': 1,}
+			return {'ToUserName': wxreq['FromUserName'],'FromUserName': wxreq['ToUserName'], 'MsgType': 'text', 'Content': '真不好意思，服务器给您跪了，可能您的调戏方式不对，请重新调戏或直接访问北斗网  http://ibeidou.net' ,'FuncFlag': 1,}
 		if not tmplist: 
-			return {'TooUserName': wxreq['FromUserName'],'FromUserName': wxreq['ToUserName'], 'MsgType': 'text', 'Content': '真不好意思，这个关键词没有对应内容，请换个关键词或直接访问北斗网    http://ibeidou.net' ,'FuncFlag': 0,}
+			return {'ToUserName': wxreq['FromUserName'],'FromUserName': wxreq['ToUserName'], 'MsgType': 'text', 'Content': '真不好意思，这个关键词没有对应内容，请换个关键词或直接访问北斗网    http://ibeidou.net' ,'FuncFlag': 0,}
 		else: 
-			return {'TooUserName': wxreq['FromUserName'],'FromUserName': wxreq['ToUserName'], 'MsgType': 'news', 'Articles': tmplist ,'FuncFlag': 0,}
+			return {'ToUserName': wxreq['FromUserName'],'FromUserName': wxreq['ToUserName'], 'MsgType': 'news', 'Articles': tmplist ,'FuncFlag': 0,}
 	
+class BeidouLocation(object):
+	"""docstring for BeidouLocation"""
+	def __init__(self, arg):
+		super(BeidouLocation, self).__init__()
+		self.arg = arg
+		

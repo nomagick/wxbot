@@ -12,20 +12,33 @@ def wxauth():
 	return wxclass.WxAuth(bottle.request.GET.decode(), token='jjjjjjj').reply()
 
 @bottle.post('/wxbot.xml')
+@bottle.post('/debug')
 def wxreply():
-	xmlstr= bottle.request.body.read().decode()
-	request= wxclass.WxRequest(xmlstr)
+#	xmlstr= bottle.request.body.read().decode()
+	request= wxclass.WxRequest(bottle.request.body, fromstr=False)
 	response= hubfunc(request)
 	return bottle.template(response['MsgType'],data=response)
 
-#@bottle.get('/debug')
-#def debug():
-#	response= hubfunc(request)
-#	print(response)
-#	debugstr= bottle.template(response[0],data=response[1])
-#	print(debugstr)
-#	return debugstr
+@bottle.post('/debug')
+def wxdebug():
+#	xmlstr= bottle.request.body.read().decode()
+	request= wxclass.WxRequest(bottle.request.forms.decode(), debug=True)
+	response= hubfunc(request)
+	print (response)
+	return bottle.template(response['MsgType'],data=response)
 
+@bottle.get('/debug')
+def debug():
+	res= """
+	<form action="/debug" method="POST">
+	<input type="text" name="FromUserName" value="123456"/>
+	<input type="text" name="ToUserName" value="654321"/>
+	<input type="text" name="MsgType" value="text"/>
+	<input type="text" name="Content" />
+	<input type="submit">
+	</form>
+	"""
+	return res
 
 if __name__ == '__main__':
 	bottle.debug(True)
