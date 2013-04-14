@@ -1,23 +1,29 @@
 import ibeidou
 
 beidoutags= ibeidou.BeidouTags()
+beidoulocation= ibeidou.BeidouLocation()
 
 operators=[
 	{
 		'id': 'main',
 		'redirect':[
-			({'skykingcovergroundtiger'}, 'admin'),
+			({'数据同步'}, 'admin_dbsync'),
 			({'1', '关键词', '关键字', '搜索',}, 'search'),
-			({'2', '活动',}, 'event'),
-			({'3', '调戏',}, 'simsim'),
+#			({'2', '活动',}, 'event'),
+			({'3', '身边的北斗人',}, 'location'),
 			({'9', '关于北斗','留言',}, 'about'),
 		],
-		'help': '北斗微信主菜单:\n1. 关键词 搜索\n2. 活动\n3. 调戏\n9. 关于北斗\nhttp://ibeidou.net',
+		'help': '北斗微信主菜单:\n1 关键词 搜索\n3 身边的北斗人\n9 关于北斗\nhttp://ibeidou.net',
 		'app': lambda req: {'ToUserName': req['FromUserName'],'FromUserName': req['ToUserName'], 'MsgType':'text', 'Content': '您刚才输入的内容未能被识别，请输入帮助信息中出现的内容.' ,'FuncFlag': 0,} ,
 	},
 	{
+		'id': 'admin_dbsync',
+		'help': '与主站数据库同步，请输入暗号。',
+		'app': (lambda req: ({'ToUserName': req['FromUserName'],'FromUserName': req['ToUserName'], 'MsgType':'text', 'Content': (beidoutags.sync() or 'OK') ,'FuncFlag': 0}) if (req['Content'] == 'λ') else ({'ToUserName': req['FromUserName'],'FromUserName': req['ToUserName'], 'MsgType':'text', 'Content': '你TMD在逗我？', 'FuncFlag':0 }))
+	},
+	{
 		'id': 'search',
-		'help': '北斗网分类/关键词搜索:\n请直接回复关键词进行文章搜索.',
+		'help': '北斗网分类/关键词搜索:\n请直接回复分类关键词进行文章搜索.\n例如: 最新发布',
 		'app' : beidoutags.wx_query,
 	},
 	{
@@ -27,8 +33,8 @@ operators=[
 	},
 	{
 		'id': 'location',
-		'help': '离我最近的北斗人:\n请回复您的地理位置.',
-		'app': lambda req: {'ToUserName': req['FromUserName'],'FromUserName': req['ToUserName'], 'MsgType':'text', 'Content': '喵！' ,'FuncFlag': 0,} ,
+		'help': '距离最近的北斗人/读者:\n1 设置资料\n2 找读者\n3 找北斗人\n 回复定位信息进行查找。',
+		'app': beidoulocation.answer ,
 	},
 
 ]

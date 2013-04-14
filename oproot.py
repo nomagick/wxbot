@@ -1,6 +1,8 @@
 from pymongo import MongoClient
 
 
+
+
 class RootOperator(object):
 	"""docstring for RootOperator"""
 	def __init__(self, operators, debug=0):
@@ -8,6 +10,8 @@ class RootOperator(object):
 		self.debuglevel= debug
 		self.operators={}
 		self.resources={}
+		self.plugins_post=[]
+		self.plugins_pre=[]
 		self.init_db()
 		self.init_reserve()
 		for x in operators:
@@ -17,6 +21,12 @@ class RootOperator(object):
 		if level > self.debuglevel:
 			print(message)
 		
+	def register_plugin(self, pluginfunc, turn='postrun'):
+		if turn == 'postrun':
+			self.plugins_post.append(pluginfunc)
+		else:
+			self.plugins_pre.append(pluginfunc)
+
 	def init_db(self):
 		self.debug('About to init Mongodb.')
 		self.resources['conn']= MongoClient('localhost',27017) #connect to your mongodb
@@ -70,7 +80,7 @@ class RootOperator(object):
 
 	def init_reserve(self):
 		self.reservations={
-			';': lambda x: self.resources['coll'].update({'_id':x['FromUserName']},{'$set':{'operator':'main'}}, True) and self.operators['main'].help ,
+			'menu': lambda x: self.resources['coll'].update({'_id':x['FromUserName']},{'$set':{'operator':'main'}}, True) and self.operators['main'].help ,
 			'help': lambda x: self.operators[self.resources['coll'].find_one({'_id':x['FromUserName']}, {'operator':1})['operator']].help ,
 		}
 		
@@ -87,4 +97,19 @@ class RootOperator(object):
 				return result
 			else:
 				continue
+		return {'ToUserName': request['FromUserName'],'FromUserName': request['ToUserName'], 'MsgType':'text', 'Content': '虽然不知道为什么，但是您的回复击穿了整个处理系统，我真的不知道该回复您什么。。\n说点别的吧。。' ,'FuncFlag': 1,}
 
+	def post_answer(self, response):
+		reply= response
+		for func in self.plugins_post:
+			reply= func(reply)
+		return reply
+
+	def pre_answer(self,request):
+		reply= request
+		for func in self.plugins_pre:
+			reply= func(reply)
+		return reply
+
+	def wx_answer(self,request):
+		return self.post_answer(self.answer(self.pre_answer(request)))

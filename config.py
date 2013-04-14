@@ -1,3 +1,0 @@
-cfgdict={
-	'token': 'jjjjjjj'
-}
