@@ -19,7 +19,7 @@ operators=[
 	{
 		'id': 'admin_dbsync',
 		'help': '与主站数据库同步，请输入暗号。',
-		'app': (lambda req: ({'ToUserName': req['FromUserName'],'FromUserName': req['ToUserName'], 'MsgType':'text', 'Content': (beidoutags.sync() or 'OK') ,'FuncFlag': 0}) if (req['Content'] == 'λ') else ({'ToUserName': req['FromUserName'],'FromUserName': req['ToUserName'], 'MsgType':'text', 'Content': '你TMD在逗我？', 'FuncFlag':0 }))
+		'app': (lambda req: ({'ToUserName': req['FromUserName'],'FromUserName': req['ToUserName'], 'MsgType':'text', 'Content': (beidoutags.sync() or 'OK') ,'FuncFlag': 0}) if (req['Content'] == 'λ') else ({'ToUserName': req['FromUserName'],'FromUserName': req['ToUserName'], 'MsgType':'text', 'Content': '输错了老湿..', 'FuncFlag':0 }))
 	},
 	{
 		'id': 'search',
@@ -33,7 +33,7 @@ operators=[
 	},
 	{
 		'id': 'location',
-		'help': '距离最近的北斗人/读者:\n1 设置资料\n2 找读者\n3 找北斗人\n 回复定位信息进行查找。',
+		'help': '距离最近的北斗人/读者:\n1 设置个人简介\n2 找读者\n3 找北斗人\n 第一次使用请先回复 1 或 个人简介 进行个人资料设置，之后才可以回复定位消息进行查找。',
 		'app': beidoulocation.answer ,
 	},
 

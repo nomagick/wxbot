@@ -18,7 +18,7 @@ NOSQLcfg= {
 }
 
 SRVcfg= {
-	'picurl': lambda x: 'http://cdn.ibeidou.net/wp-content/uploads/'+x if x else 'http://cdn.ibeidou.net/wp-content/uploads/2012/12/logo.jpg' ,
+	'picurl': lambda x: 'http://cdn.ibeidou.net/wp-content/uploads/'+x if x else 'http://cdn.ibeidou.net/wp-content/uploads/2009/02/guestbook.jpg' ,
 	'posturl': lambda x: 'http://ibeidou.net/archives/'+str(x) if x else 'http://ibeidou.net/',
 	'description': lambda x,y: x if x else y if y else ' 生而不易  愿同摘星 ',
 	'max_sync_buff': 10000,
@@ -42,6 +42,15 @@ class BeidouTags(object):
 	def init_sdb(self):
 		self.resource['s_conn']= sdb.connect(**self.conf['s'])
 		self.resource['s_cursor']= self.resource['s_conn'].cursor(buffered=True)
+
+	def destruct_sdb(self):
+		try:
+			self.resource['s_conn'].close()
+			del self.resource['s_cursor']
+			del self.resource['s_conn']
+		except:
+			pass
+
 
 	def init_ndb(self):
 		self.resource['n_conn']= ndb(self.conf['n']['hostname'], self.conf['n']['port'])
@@ -111,6 +120,7 @@ class BeidouTags(object):
 					}
 		for item in self.nkeywords:
 			self.nkeywords[item]= sorted(list(self.nkeywords[item]), reverse=True)
+		self.destruct_sdb()
 #		self.merge_to_nosql()
 
 	def merge_to_nosql(self):
@@ -156,7 +166,7 @@ class BeidouTags(object):
 		except :
 			return {'ToUserName': wxreq['FromUserName'],'FromUserName': wxreq['ToUserName'], 'MsgType': 'text', 'Content': '真不好意思，服务器给您跪了，可能您的调戏方式不对，请重新调戏或直接访问北斗网  http://ibeidou.net' ,'FuncFlag': 1,}
 		if not tmplist: 
-			return {'ToUserName': wxreq['FromUserName'],'FromUserName': wxreq['ToUserName'], 'MsgType': 'text', 'Content': '真不好意思，这个关键词没有对应内容，请换个关键词或直接访问北斗网    http://ibeidou.net' ,'FuncFlag': 0,}
+			return {'ToUserName': wxreq['FromUserName'],'FromUserName': wxreq['ToUserName'], 'MsgType': 'text', 'Content': '真不好意思，这个关键词没有对应内容，但是您可以<a href=\"http://ibeidou.net/?s='+wxreq['Content']+'\">直接在北斗网上搜索「'+wxreq['Content']+'」</a>或访问北斗网主页\nhttp://ibeidou.net' ,'FuncFlag': 0,}
 		else: 
 			return {'ToUserName': wxreq['FromUserName'],'FromUserName': wxreq['ToUserName'], 'MsgType': 'news', 'Articles': tmplist ,'FuncFlag': 0,}
 	
@@ -178,7 +188,7 @@ class BeidouLocation(object):
 		self.resource['coll'].ensure_index([('location', '2dsphere'), ('identity', 1)])
 
 		self.menu= [
-			({'1','设置简介', '个人简介','设置介绍','自我介绍','设置资料'},'set_profile','请回复一条文本消息作为您的自我介绍\n至少要包含您的名字\n这条消息中的所有内容都将在您被搜索到的时候展示给其他用户。'),
+			({'1','设置简介', '个人简介','设置介绍','自我介绍','设置资料'},'set_profile','请回复一条文本消息作为您的自我介绍\n至少要包含您的名字.\n如果您想让其他用户加您好友那么请包含相应联系方式，比如微信号什么的.\n这条消息中的所有内容都将在您被搜索到的时候展示给其他用户。'),
 			({'愿同坠地'},'set_volunteer','哎呦..[好像有什么东西碎了一地]\n现在随便回复点什么，系统会记下你是北斗人。'),
 			({'2','读者'},'query_reader','已经切换为寻找最近的读者。请回复您的位置信息。'),
 			({'3','北斗人','志愿者'},'query_volunteer','已经切换为寻找最近的北斗志愿者。请回复您的位置信息。'),
@@ -247,7 +257,7 @@ class BeidouLocation(object):
 			return {'FromUserName':wxreq['ToUserName'], 'ToUserName':wxreq['FromUserName'], 'MsgType':'text', 'Content': result, 'FuncFlag':0}
 		try:
 			behavior= self.resource['coll'].find_one({'_id': wxreq['FromUserName']}, {'behavior':1})['behavior']
-		except KeyError:
+		except:
 			return {'FromUserName':wxreq['ToUserName'], 'ToUserName':wxreq['FromUserName'], 'MsgType':'text', 'Content': '请您先回复 设置资料 完善您的个人资料后再进行其他操作', 'FuncFlag':0}
 
 		result= getattr(self, behavior)(wxreq)
