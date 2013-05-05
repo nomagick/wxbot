@@ -29,7 +29,7 @@ SRVcfg= {
 _shared_ndb_connection= None
 
 class BeidouTags(object):
-	"""docstring for Wpdb"""
+	"""docstring for BeidouTags"""
 	def __init__(self, SQLconf= SQLcfg, NOSQLconf= NOSQLcfg, SRVconf=SRVcfg):
 		super(BeidouTags, self).__init__()
 		self.conf={}
@@ -164,11 +164,11 @@ class BeidouTags(object):
 		try:
 			tmplist= self.query(wxreq['Content'])
 		except :
-			return {'ToUserName': wxreq['FromUserName'],'FromUserName': wxreq['ToUserName'], 'MsgType': 'text', 'Content': '真不好意思，服务器给您跪了，可能您的调戏方式不对，请重新调戏或直接访问北斗网  http://ibeidou.net' ,'FuncFlag': 1,}
+			return wxreq.reply('text','真不好意思，服务器给您跪了，可能您的调戏方式不对，请重新调戏或直接访问北斗网  http://ibeidou.net')
 		if not tmplist: 
-			return {'ToUserName': wxreq['FromUserName'],'FromUserName': wxreq['ToUserName'], 'MsgType': 'text', 'Content': '真不好意思，这个关键词没有对应内容，但是您可以<a href=\"http://ibeidou.net/?s='+wxreq['Content']+'\">直接在北斗网上搜索「'+wxreq['Content']+'」</a>或访问北斗网主页\nhttp://ibeidou.net' ,'FuncFlag': 0,}
+			return wxreq.reply('text','真不好意思，这个关键词没有对应内容，但是您可以<a href=\"http://ibeidou.net/?s='+wxreq['Content']+'\">直接在北斗网上搜索「'+wxreq['Content']+'」</a>或访问北斗网主页\nhttp://ibeidou.net')
 		else: 
-			return {'ToUserName': wxreq['FromUserName'],'FromUserName': wxreq['ToUserName'], 'MsgType': 'news', 'Articles': tmplist ,'FuncFlag': 0,}
+			return wxreq.reply('news',[(x['Title'],x['Description'],x['PicUrl'],x['Url']) for x in tmplist])
 	
 class BeidouLocation(object):
 	"""docstring for BeidouLocation"""
@@ -254,13 +254,15 @@ class BeidouLocation(object):
 	def answer(self, wxreq):
 		result= self.change_behavior(wxreq)
 		if result:
-			return {'FromUserName':wxreq['ToUserName'], 'ToUserName':wxreq['FromUserName'], 'MsgType':'text', 'Content': result, 'FuncFlag':0}
+			return wxreq.reply('text',result)
+		else:
+			pass
 		try:
 			behavior= self.resource['coll'].find_one({'_id': wxreq['FromUserName']}, {'behavior':1})['behavior']
 		except:
-			return {'FromUserName':wxreq['ToUserName'], 'ToUserName':wxreq['FromUserName'], 'MsgType':'text', 'Content': '请您先回复 设置资料 完善您的个人资料后再进行其他操作', 'FuncFlag':0}
+			return wxreq.reply('text','请您先回复 设置资料 完善您的个人资料后再进行其他操作')
 
 		result= getattr(self, behavior)(wxreq)
 		if not result:
 			result= '出问题了..=_=||\n请确保您已经完善了您的个人信息，之后严格按照帮助信息的内容进行操作。\n所谓位置信息是指微信提供的定位信息，请先选择回复框左侧加号状物体，再在弹出的众多方框中选择 位置 二字上方的方框。'
-		return {'FromUserName':wxreq['ToUserName'], 'ToUserName':wxreq['FromUserName'], 'MsgType':'text', 'Content': result, 'FuncFlag':0}
+		return wxreq.reply('text',result)

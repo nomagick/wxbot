@@ -2,6 +2,7 @@ import lxml.etree as ET
 from hashlib import sha1
 from copy import deepcopy
 from hashlib import sha1
+from time import time
 
 
 class WxError(Exception):
@@ -14,7 +15,7 @@ class WxError(Exception):
 class WxRequest(object):
 	"""docstring for WxRequest"""
 	def __init__(self, xmlinf, fromstr=True, debug=False):
-		super(WxRequest, self).__init__()
+#		super(WxRequest, self).__init__()
 		if debug:
 			self.argdict= xmlinf
 			return None
@@ -22,10 +23,6 @@ class WxRequest(object):
 			xmlobj= ET.fromstring(xmlinf)
 		else:
 			xmlobj= ET.parse(xmlinf)
-#		self.type= xmlobj.find('MsgType').text
-#		self.api= wxapi.request[self.type]
-#		self.keys= [x[0] for x in self.api]
-#		self.argdict= {x:y for x,y in zip((key for key in self.keys),(xmlobj.text for xmlobj in ET.fromstring(xmlinf))) if y not in ['\n',None,'\r\n']}
 		self.argdict= WxRequest._parse(xmlobj)
 
 	@staticmethod
@@ -50,36 +47,34 @@ class WxRequest(object):
 	def __getattr__(self, key):
 		return self.argdict[key]
 
-#class WxResponse(object):
+	def reply(self, msgtype, msgarg, **rawarg):
+		if rawarg:
+			print('Found **arg ,using raw mode.')
+			return WxResponse(msgtype, rawarg)
+		else:
+			return WxResponse(msgtype, dict(WxResponse.api['common'](self),**WxResponse.api[msgtype](msgarg)))
+
+class WxResponse(object):
 #	"""docstring for WxResponse"""
-#	_apicache={}
-#	@staticmethod
-#	def _mkcache(templet, rootelm='xml'):
-#		xmlparser= ET.XMLParser(strip_cdata=False)
-#		for msgtype,templet in wxapi.responses.items():
-#			WxResponse._apicache[msgtype]= {rootelm: ET.fromstring(templet, xmlparser)}
-#			for xmlobj in WxResponse._apicache[msgtype][rootelm].iterdescendants():
-#				if len(xmlobj):
-#					WxResponse._apicache[msgtype][xmlobj.tag]= deepcopy(xmlobj)
-#
-#
-# 	def __getitem__(self, keystr):
-#		i=self.xmlobj
-#		for key in keystr.rsplit('.'):
-#			i= i.find(key)
-#		return i.text
-#
-#	def __setitem__(self, keystr, value):
-#		i=self.xmlobj
-#		for key in keystr.rsplit('.'):
-#			i= i.find(key)
-#		i.text= value
-#
-#	def __init__(self, rstype):
+	api={
+		'text': lambda x: {'Content':x,'MsgType':'text'},
+		'news': lambda x: {'Articles': [dict(zip(('Title','Description','PicUrl','Url'),t)) for t in x ],'ArticleCount': len(x),'MsgType':'news'},
+		'music': lambda x: dict(zip(('Title','Description','MusicUrl','HQMusicUrl'),x),MsgType='music') ,
+		'common': lambda x: {'ToUserName': x['FromUserName'],'FromUserName':x['ToUserName'],'CreateTime':int(time()),'FuncFlag':0},
+
+	}
+
+	def __init__(self, rstype, argd):
 #		super(WxResponse, self).__init__()
-#		self.type = rstype
-#		self.xmlobj= deepcopy(WxResponse._apicache[rstype])
-#
+		self.type= rstype
+		self.argd= argd
+		self.pass_to= None
+
+	def __getitem__(self, key):
+		return self.argd[key]
+	def __setitem__(self, key, value):
+		self.argd[key]= value
+
 #
 #
 #	def _autofill(self):
@@ -96,7 +91,6 @@ class WxAuth(object):
 		self.arg = arg
 		self.arg.update(additional)
 		self.ok= bool(WxAuth._check(self.arg))
-		
 
 	def __bool__(self):
 		return self.ok

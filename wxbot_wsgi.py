@@ -1,17 +1,19 @@
 import bottle
 
 import wxclass
-from apphub import hubfunc
 
-@bottle.get('/wxbot.xml')
-def wxauth():
-	return wxclass.WxAuth(bottle.request.GET.decode(), token='jjjjjjj').reply()
-
-@bottle.post('/wxbot.xml')
-def wxreply():
-	request= wxclass.WxRequest(bottle.request.body.read().decode())
-	response= hubfunc(request)
-	return bottle.template(response['MsgType'],data=response)
+from wxophub import appfunc
+#from apphub import hubfunc
+#
+#@bottle.get('/wxbot.xml')
+#def wxauth():
+#	return wxclass.WxAuth(bottle.request.GET.decode(), token='jjjjjjj').reply()
+#
+#@bottle.post('/wxbot.xml')
+#def wxreply():
+#	request= wxclass.WxRequest(bottle.request.body.read().decode())
+#	response= hubfunc(request)
+#	return bottle.template(response['MsgType'],data=response)
 
 @bottle.get('/ibeidou.xml')
 def wxauth():
@@ -20,7 +22,7 @@ def wxauth():
 @bottle.post('/ibeidou.xml')
 def wxreply():
 	request= wxclass.WxRequest(bottle.request.body.read().decode())
-	response= hubfunc(request)
+	response= appfunc(request)
 	return bottle.template(response['MsgType'],data=response)
 
 #@bottle.post('/debug')
@@ -46,6 +48,6 @@ def wxreply():
 
 if __name__ == '__main__':
 	bottle.debug(True)
-	bottle.run(host='0.0.0.0', port=8080)
+	bottle.run(host='0.0.0.0', port=80)
 else:
 	application=bottle.app()
