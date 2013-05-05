@@ -1,12 +1,12 @@
 #	A Pre answer plugin takes a wxclass.WxRequest object and should also return a wxclass.WxRequest object.
-def pre_convert_event(wxreq):
+def pre_convert_event(wxreq):	#Default plugin, DO NOT REMOVE !!
 	if wxreq['MsgType'] == 'event':
 		wxreq['MsgType']= 'text'
 		wxreq['Content']= 'help'
 	return wxreq
 
 #	A Post answer plugin takes a wxclass.WxResponse object and should also return a wxclass.WxResponse object.
-def post_add_reminder(wxres):
+def post_add_reminder(wxres):	#Default plugin, DO NOT REMOVE !!
 	if wxres['MsgType']== 'text':
 		wxres['Content']= wxres['Content']+'\n--------\nhelp 查看帮助信息\nmenu 回到主菜单'
 	return wxres
@@ -31,7 +31,8 @@ evil_reservations={
 	'menu': lambda op,req: req.reply('text',op.transfer(req['FromUserName'],'main')) ,
 	'help': lambda op,req: req.reply('text',op.operators[req.curoperator].help),
 }
-def mid_reserved(rootop,wxreq):
+
+def mid_reserved(rootop,wxreq):	#Default plugin, DO NOT REMOVE !!
 	try:
 		return evil_reservations[wxreq['Content'].rstrip()](rootop,wxreq)
 	except:

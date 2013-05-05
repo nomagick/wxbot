@@ -87,7 +87,7 @@ class WxAuth(object):
 	_sendback = lambda argd: argd['echostr']
 
 	def __init__(self, arg, **additional):  #You should always give a token='xxxx' pram !
-		super(WxAuth, self).__init__()
+#		super(WxAuth, self).__init__()
 		self.arg = arg
 		self.arg.update(additional)
 		self.ok= bool(WxAuth._check(self.arg))
