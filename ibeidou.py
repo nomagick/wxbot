@@ -166,7 +166,7 @@ class BeidouTags(object):
 		except :
 			return wxreq.reply('text','真不好意思，服务器给您跪了，可能您的调戏方式不对，请重新调戏或直接访问北斗网  http://ibeidou.net')
 		if not tmplist: 
-			return wxreq.reply('text','真不好意思，这个关键词没有对应内容，但是您可以<a href=\"http://ibeidou.net/?s='+wxreq['Content']+'\">直接在北斗网上搜索「'+wxreq['Content']+'」</a>或访问北斗网主页\nhttp://ibeidou.net')
+			return wxreq.reply('news',[(wxreq['Content'],'直接在北斗网上搜索「'+wxreq['Content']+'」\nhttp://ibeidou.net','http://cdn.ibeidou.net/wp-content/uploads/2009/02/guestbook.jpg','http://ibeidou.net/?s='+wxreq['Content']),])
 		else: 
 			return wxreq.reply('news',[(x['Title'],x['Description'],x['PicUrl'],x['Url']) for x in tmplist])
 	
@@ -251,7 +251,7 @@ class BeidouLocation(object):
 		except IndexError:
 			return None
 	
-	def answer(self, wxreq):
+	def wx_query(self, wxreq):
 		result= self.change_behavior(wxreq)
 		if result:
 			return wxreq.reply('text',result)
@@ -266,3 +266,40 @@ class BeidouLocation(object):
 		if not result:
 			result= '出问题了..=_=||\n请确保您已经完善了您的个人信息，之后严格按照帮助信息的内容进行操作。\n所谓位置信息是指微信提供的定位信息，请先选择回复框左侧加号状物体，再在弹出的众多方框中选择 位置 二字上方的方框。'
 		return wxreq.reply('text',result)
+
+
+class BeidouBookClub(object):
+	"""docstring for BeidouBookClub"""
+	def __init__(self, dbconf=NOSQLcfg, ):
+		super(BeidouLocation, self).__init__()
+		self.conf={}
+		self.resource={}
+		global _shared_ndb_connection
+		if _shared_ndb_connection:
+			self.resource['conn']= _shared_ndb_connection
+		else:
+			self.resource['conn']= ndb(dbconf['hostname'], dbconf['n']['port'])
+			_shared_ndb_connection= self.resource['conn']
+		self.resource['db']= self.resource['conn']['ibeidou']
+		self.resource['coll']= self.resource['db']['bookclub']
+
+	def query(self,wxreq):
+		try:
+			return self.resource['coll'].find_one({'_id':wxreq['Content']})
+		except:
+			return None
+
+	def wx_query(self,wxreq):
+		result=self.query(wxreq)
+		if result:
+			return wxreq.reply('music',(result['Title'],result['Description'],result['MusicUrl'],result['HQMusicUrl']))
+		else:
+			return wxreq.reply('text','这个关键词没有对应内容，请查询其它关键词。')
+
+	def mk_live_cache(self,fpath):
+		if not glob:
+			from glob import glob
+		else:
+			pass
+		mp3s=glob(fpath+'/*.mp3')
+		txts=[x.replace('mp3','txt') for x in mp3s]

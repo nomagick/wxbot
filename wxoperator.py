@@ -1,12 +1,17 @@
 from pymongo import MongoClient
 from functools import partial
 
-
+dbcfg={
+	'host': 'localhost',
+	'port': 27017,
+	'database': 'ibeidou',
+	'collection': 'operator',
+}
 
 
 class RootOperator(object):
 	"""docstring for RootOperator"""
-	def __init__(self, operators=[], debug=0):
+	def __init__(self, operators=[], debug=0, dbcfg=dbcfg):
 		super(RootOperator, self).__init__()
 		self.debuglevel= debug
 		self.operators={}
@@ -14,9 +19,12 @@ class RootOperator(object):
 		self.plugins_post=[]
 		self.plugins_pre=[]
 		self.plugins_mid=[self.runopfunc]
-		self.init_db()
+		self.init_db(dbcfg)
 		for x in operators:
 			self.register(x)
+
+	def __getitem__(self,key):
+		return self.operators[key]
 
 	def debug(self, message, level=1):
 		if level > self.debuglevel:
@@ -34,11 +42,11 @@ class RootOperator(object):
 		else :
 			self.plugins_mid.insert(-1,pluginfunc)
 
-	def init_db(self):
+	def init_db(self,dbcfg):
 		self.debug('About to init Mongodb.')
-		self.resources['conn']= MongoClient('localhost',27017) #connect to your mongodb
-		self.resources['db']= self.resources['conn']['ibeidou'] #find your database
-		self.resources['coll']= self.resources['db']['operator'] #find your collection
+		self.resources['conn']= MongoClient(dbcfg['host'],dbcfg['port']) #connect to your mongodb
+		self.resources['db']= self.resources['conn'][dbcfg['database']] #find your database
+		self.resources['coll']= self.resources['db'][dbcfg['collection']] #find your collection
 
 	def register(self, operator):
 		self.debug('About register operator '+ operator.id)
@@ -59,6 +67,12 @@ class RootOperator(object):
 		self.resources['coll'].update({'_id':user},{'$set':{'operator':target}}, True)
 		return self.operators[target].help
 
+	def pre_answer(self,request):
+		reply= request
+		for func in self.plugins_pre:
+			reply= func(reply)
+		return reply
+
 	def answer(self, request):
 		for func in self.plugins_mid:
 			result= func(request)
@@ -74,11 +88,6 @@ class RootOperator(object):
 			reply= func(reply)
 		return reply
 
-	def pre_answer(self,request):
-		reply= request
-		for func in self.plugins_pre:
-			reply= func(reply)
-		return reply
 
 	def __call__(self,request):
 		return self.post_answer(self.answer(self.pre_answer(self.init_request(request))))

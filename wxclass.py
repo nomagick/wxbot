@@ -47,12 +47,12 @@ class WxRequest(object):
 	def __getattr__(self, key):
 		return self.argdict[key]
 
-	def reply(self, msgtype, msgarg, **rawarg):
-		if rawarg:
-			print('Found **arg ,using raw mode.')
-			return WxResponse(msgtype, rawarg)
+	def reply(self, msgtype, msgarg):
+		if msgtype== 'raw':
+#			print('Using raw mode.')
+			return WxResponse(dict(msgarg,**WxResponse.api['common'](self)))
 		else:
-			return WxResponse(msgtype, dict(WxResponse.api['common'](self),**WxResponse.api[msgtype](msgarg)))
+			return WxResponse(dict(WxResponse.api['common'](self),**WxResponse.api[msgtype](msgarg)))
 
 class WxResponse(object):
 #	"""docstring for WxResponse"""
@@ -64,17 +64,18 @@ class WxResponse(object):
 
 	}
 
-	def __init__(self, rstype, argd):
+	def __init__(self, argd):
 #		super(WxResponse, self).__init__()
-		self.type= rstype
 		self.argd= argd
-		self.pass_to= None
+		self.type= argd['MsgType']
+#		self.pass_to= None
 
 	def __getitem__(self, key):
 		return self.argd[key]
 	def __setitem__(self, key, value):
 		self.argd[key]= value
-
+	def star(self):
+		self.argd['FuncFlag']=1
 #
 #
 #	def _autofill(self):

@@ -2,9 +2,11 @@ import wxoperator
 import wxopplugins
 
 import ibeidou
+import wxparrot
 
 beidoutags= ibeidou.BeidouTags()
 beidoulocation= ibeidou.BeidouLocation()
+parrot= wxparrot.Parrot()
 
 initdata=[
 	{
@@ -15,6 +17,10 @@ initdata=[
 			'关键词': 'search',
 			'关键字': 'search',
 			'搜索': 'search',
+#			'2': 'bookclub',
+#			'北斗读书会': 'bookclub',
+#			'读书会': 'bookclub',
+
 			'3': 'location',
 			'身边的北斗人': 'location',
 			'9': 'about',
@@ -22,10 +28,15 @@ initdata=[
 			'留言': 'about',
 		},
 		'help': '北斗微信主菜单:\n1 关键词 搜索\n3 身边的北斗人\n9 关于北斗\nhttp://ibeidou.net',
-		'app': lambda req: req.reply('text','您刚才输入的内容未能被识别，请输入帮助信息中出现的内容.'),
+		'app': parrot,
 	},
 	{
-		'id': 'admin_dbsync',
+		'id':'teach',
+		'help':'Teach the parrot what to say.\nFormat: key => value .',
+		'app': parrot.wx_teach_text,
+	},
+	{
+		'id': 'dbsync',
 		'help': '与主站数据库同步，请输入暗号。',
 		'app': (lambda req: req.reply('text',(beidoutags.sync() or 'OK')) if (req['Content'] == 'λ') else req.reply('text','输错了老湿..'))
 	},
@@ -42,16 +53,17 @@ initdata=[
 	{
 		'id': 'location',
 		'help': '距离最近的北斗人/读者:\n1 设置个人简介\n2 找读者\n3 找北斗人\n 第一次使用请先回复 1 或 个人简介 进行个人资料设置，之后才可以回复定位消息进行查找。',
-		'app': beidoulocation.answer ,
+		'app': beidoulocation.wx_query ,
 	},
 
 ]
 
 default= wxoperator.RootOperator([wxoperator.Operator(x) for x in initdata])
 default.plugin(wxopplugins.pre_convert_event,timetorun='pre',coremode=False)
-default.plugin(wxopplugins.post_add_reminder,timetorun='post',coremode=False)
 default.plugin(wxopplugins.mid_route,timetorun='mid',coremode=True)
 default.plugin(wxopplugins.mid_reserved,timetorun='mid',coremode=True)
+default.plugin(wxopplugins.mid_pseudo_shell,timetorun='mid',coremode=True)
+default.plugin(wxopplugins.post_add_reminder,timetorun='post',coremode=False)
 
 appfunc=default
 

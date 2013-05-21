@@ -11,6 +11,7 @@ def post_add_reminder(wxres):	#Default plugin, DO NOT REMOVE !!
 		wxres['Content']= wxres['Content']+'\n--------\nhelp 查看帮助信息\nmenu 回到主菜单'
 	return wxres
 
+
 #	A Mid answer plugin takes a wxclass.WxRequest object and should return either a wxclass.WxResponse object or None.
 #	A COREMOOD plugin takes the root operator instance as the first pram and the WxRequest/WxResponse object as the second pram.
 def mid_route(rootop,wxreq):	#Default plugin, DO NOT REMOVE !!
@@ -38,3 +39,18 @@ def mid_reserved(rootop,wxreq):	#Default plugin, DO NOT REMOVE !!
 	except:
 		return None
 
+# use this format: #cmd> your arguments 
+def mid_pseudo_shell(rootop,wxreq):
+	try:
+		if wxreq['Content'][0] != '#' :
+			return None
+		else:
+			pass
+	except:
+		return None
+	cmd= wxreq['Content'][1:].partition('>')
+	wxreq['Content']= cmd[2].strip()
+	try:
+		return rootop[cmd[0].strip()](wxreq)
+	except:
+		return wxreq.reply('text','Pseudo shell exception.')
