@@ -155,9 +155,9 @@ class BeidouTags(object):
 		self.merge_to_nosql()
 		self.mk_live_cache()
 		#dirty starts
-		latestpost=self.query('最新发布')
-		latestpost= wxclass.WxResponse.api['news']([(latestpost['Title'],latestpost['Description'],latestpost['PicUrl'],latestpost['Url']),])
-		self.resource['n_db']['parrot'].update({'_id':'最新发布'},{'$set':{'answers':[latestpost,]}})
+		latestposts=self.query('最新发布')
+		latestposts= wxclass.WxResponse.api['news']([(x['Title'],x['Description'],x['PicUrl'],x['Url']) for x in latestposts])
+		self.resource['n_db']['parrot'].update({'_id':'最新发布'},{'$set':{'answers':[latestposts,]}},True)
 		#dirty ends
 
 	def query(self, kw):
@@ -297,10 +297,16 @@ class BeidouBookClub(object):
 			return None
 
 	def wx_query(self,wxreq):
-		result=self.query(wxreq)
-		if result:
-			return wxreq.reply('music',(result['Title'],result['Description'],result['MusicUrl'],result['HQMusicUrl']))
+		if (wxreq['Content'] == 'λ'):
+			self.mk_live_cache('./bookclub')
+			return wxreq.reply('text','OK.')
 		else:
+			pass
+		result=None
+		try:
+			result= self.query(wxreq)['answer']
+			return wxreq.reply('music',(result['Title'],result['Description'],result['MusicUrl'],result['HQMusicUrl']))
+		except:
 			return wxreq.reply('text','这个关键词没有对应内容，请查询其它关键词。')
 
 	def mk_live_cache(self,fpath):

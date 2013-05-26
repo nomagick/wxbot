@@ -49,7 +49,7 @@ class RootOperator(object):
 		self.resources['coll']= self.resources['db'][dbcfg['collection']] #find your collection
 
 	def register(self, operator):
-		self.debug('About register operator '+ operator.id)
+		self.debug('About to register operator '+ operator.id)
 		self.operators[operator.id]= operator
  
 	def init_request(self, request):
@@ -100,6 +100,8 @@ class Operator(object):
 		'app': lambda wxreq: wxreq.reply('text','DEBUG: Custom app not provided.'),
 	}
 	def __init__(self, argd):
+		if 'id' not in argd:
+			raise KeyError('id')
 		super(Operator, self).__init__()
 		self.cfgd= dict(Operator.cfgd,**argd)
 	def __getattr__(self, key):
@@ -109,5 +111,8 @@ class Operator(object):
 			return None
 
 	def __call__(self, req):
-		return self.cfgd['app'](req)
+		tmp=self.cfgd['app'](req)
+		if tmp:
+			tmp.caller= self.id
+		return tmp
 

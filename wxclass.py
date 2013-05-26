@@ -64,18 +64,25 @@ class WxResponse(object):
 
 	}
 
-	def __init__(self, argd):
+	def __init__(self, argd, caller=None):
 #		super(WxResponse, self).__init__()
 		self.argd= argd
 		self.type= argd['MsgType']
+		self.caller= None
 #		self.pass_to= None
 
 	def __getitem__(self, key):
 		return self.argd[key]
 	def __setitem__(self, key, value):
 		self.argd[key]= value
+		
 	def star(self):
 		self.argd['FuncFlag']=1
+		return self
+
+	def setCaller(self,caller):
+		self.caller=caller
+		return self
 #
 #
 #	def _autofill(self):

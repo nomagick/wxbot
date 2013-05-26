@@ -6,9 +6,16 @@ def pre_convert_event(wxreq):	#Default plugin, DO NOT REMOVE !!
 	return wxreq
 
 #	A Post answer plugin takes a wxclass.WxResponse object and should also return a wxclass.WxResponse object.
-def post_add_reminder(wxres):	#Default plugin, DO NOT REMOVE !!
+def post_add_reminder(rootop,wxres):	#Default plugin, DO NOT REMOVE !!
 	if wxres['MsgType']== 'text':
-		wxres['Content']= wxres['Content']+'\n--------\nhelp 查看帮助信息\nmenu 回到主菜单'
+		if wxres.caller:
+			try:
+				head= rootop[wxres.caller].name+':\n------------\n'
+			except:
+				head= wxres.caller+':\n-----------\n'
+		else:
+			head= ''
+		wxres['Content']= head + wxres['Content']+'\n--------\nhelp 查看帮助信息\nmenu 回到主菜单'
 	return wxres
 
 
