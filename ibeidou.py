@@ -2,6 +2,8 @@ import mysql.connector as sdb
 from pymongo import MongoClient as ndb
 from time import time
 
+import wxclass
+
 SQLcfg= {
 	'user': 'wxbot',
 	'password': 'beidou7stars',
@@ -54,7 +56,7 @@ class BeidouTags(object):
 
 	def init_ndb(self):
 		self.resource['n_conn']= ndb(self.conf['n']['hostname'], self.conf['n']['port'])
-		self.resource['n_db']= self.resource['n_conn']['ibeidou']
+		self.resource['n_db']= self.resource['n_conn'][self.conf['n']['database']]
 		global _shared_ndb_connection
 		if not _shared_ndb_connection:
 			_shared_ndb_connection= self.resource['n_conn']
@@ -152,6 +154,11 @@ class BeidouTags(object):
 		self.fetch_from_sql(mode,arg)
 		self.merge_to_nosql()
 		self.mk_live_cache()
+		#dirty starts
+		latestpost=self.query('最新发布')
+		latestpost= wxclass.WxResponse.api['news']([(latestpost['Title'],latestpost['Description'],latestpost['PicUrl'],latestpost['Url']),])
+		self.resource['n_db']['parrot'].update({'_id':'最新发布'},{'$set':{'answers':[latestpost,]}})
+		#dirty ends
 
 	def query(self, kw):
 		cached= self.resource['n_live'].find_one({'_id':kw})
@@ -180,9 +187,9 @@ class BeidouLocation(object):
 		if _shared_ndb_connection:
 			self.resource['conn']= _shared_ndb_connection
 		else:
-			self.resource['conn']= ndb(dbconf['hostname'], dbconf['n']['port'])
+			self.resource['conn']= ndb(dbconf['hostname'], dbconf['port'])
 			_shared_ndb_connection= self.resource['conn']
-		self.resource['db']= self.resource['conn']['ibeidou']
+		self.resource['db']= self.resource['conn'][dbconf['database']]
 		self.resource['coll']= self.resource['db']['location']
 
 		self.resource['coll'].ensure_index([('location', '2dsphere'), ('identity', 1)])
@@ -271,16 +278,16 @@ class BeidouLocation(object):
 class BeidouBookClub(object):
 	"""docstring for BeidouBookClub"""
 	def __init__(self, dbconf=NOSQLcfg, ):
-		super(BeidouLocation, self).__init__()
+		super(BeidouBookClub, self).__init__()
 		self.conf={}
 		self.resource={}
 		global _shared_ndb_connection
 		if _shared_ndb_connection:
 			self.resource['conn']= _shared_ndb_connection
 		else:
-			self.resource['conn']= ndb(dbconf['hostname'], dbconf['n']['port'])
+			self.resource['conn']= ndb(dbconf['hostname'], dbconf['port'])
 			_shared_ndb_connection= self.resource['conn']
-		self.resource['db']= self.resource['conn']['ibeidou']
+		self.resource['db']= self.resource['conn'][dbconf['database']]
 		self.resource['coll']= self.resource['db']['bookclub']
 
 	def query(self,wxreq):
@@ -297,9 +304,15 @@ class BeidouBookClub(object):
 			return wxreq.reply('text','这个关键词没有对应内容，请查询其它关键词。')
 
 	def mk_live_cache(self,fpath):
-		if not glob:
+		try:
+			glob
+		except:
 			from glob import glob
 		else:
 			pass
 		mp3s=glob(fpath+'/*.mp3')
 		txts=[x.replace('mp3','txt') for x in mp3s]
+		lines= [[x.strip() for x in open(y).readlines()] for y in txts]
+		for item in lines:
+			for tag in item[4].split(' '):
+				self.resource['coll'].update({'_id':tag},{'$set':{'answer':{'Title':item[0],'Description':item[1],'MusicUrl':item[2],'HQMusicUrl':item[3]}}}, True) 

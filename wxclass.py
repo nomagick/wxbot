@@ -1,6 +1,6 @@
 import lxml.etree as ET
 from hashlib import sha1
-from copy import deepcopy
+#from copy import deepcopy
 from hashlib import sha1
 from time import time
 

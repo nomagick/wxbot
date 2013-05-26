@@ -61,7 +61,7 @@ initdata=[
 default= wxoperator.RootOperator([wxoperator.Operator(x) for x in initdata])
 default.plugin(wxopplugins.pre_convert_event,timetorun='pre',coremode=False)
 default.plugin(wxopplugins.mid_route,timetorun='mid',coremode=True)
-default.plugin(wxopplugins.mid_reserved,timetorun='mid',coremode=True)
+default.plugin(wxopplugins.mid_reserved_words,timetorun='mid',coremode=True)
 default.plugin(wxopplugins.mid_pseudo_shell,timetorun='mid',coremode=True)
 default.plugin(wxopplugins.post_add_reminder,timetorun='post',coremode=False)
 

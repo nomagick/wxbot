@@ -33,7 +33,7 @@ evil_reservations={
 	'help': lambda op,req: req.reply('text',op.operators[req.curoperator].help),
 }
 
-def mid_reserved(rootop,wxreq):	#Default plugin, DO NOT REMOVE !!
+def mid_reserved_words(rootop,wxreq):	#Default plugin, DO NOT REMOVE !!
 	try:
 		return evil_reservations[wxreq['Content'].rstrip()](rootop,wxreq)
 	except:

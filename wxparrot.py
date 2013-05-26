@@ -40,6 +40,8 @@ class Parrot(object):
 
 	def wx_teach_text(self,wxreq):
 		pair= wxreq['Content'].partition('=>')
+		if not (pair[0] and pair[2]):
+			return wxreq.reply('text','Invalid.')
 		self.insert(pair[0].strip(),{'MsgType':'text','Content':pair[2].strip()})
 		return wxreq.reply('text',pair[0] + ' => ' + pair[2] + '\nOK.')
 
