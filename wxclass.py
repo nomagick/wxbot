@@ -1,9 +1,7 @@
 import lxml.etree as ET
 from hashlib import sha1
 #from copy import deepcopy
-from hashlib import sha1
 from time import time
-
 
 class WxError(Exception):
 	"""docstring for WxError"""
@@ -30,7 +28,7 @@ class WxRequest(object):
 		tmpdict={}
 		for elem in xmlobj:
 			if len(elem):
-				tmpdict[elem.tag]= WxRequest.parse(elem)
+				tmpdict[elem.tag]= WxRequest._parse(elem)
 			else:
 				tmpdict[elem.tag]= elem.text
 		return tmpdict
@@ -47,12 +45,12 @@ class WxRequest(object):
 	def __getattr__(self, key):
 		return self.argdict[key]
 
-	def reply(self, msgtype, msgarg):
+	def reply(self, msgtype, msgarg, stared= False):
 		if msgtype== 'raw':
 #			print('Using raw mode.')
-			return WxResponse(dict(msgarg,**WxResponse.api['common'](self)))
+			return WxResponse(dict(msgarg,**WxResponse.api['common'](self)), stared= stared)
 		else:
-			return WxResponse(dict(WxResponse.api['common'](self),**WxResponse.api[msgtype](msgarg)))
+			return WxResponse(dict(WxResponse.api['common'](self),**WxResponse.api[msgtype](msgarg)), stared= stared)
 
 class WxResponse(object):
 #	"""docstring for WxResponse"""
@@ -64,11 +62,13 @@ class WxResponse(object):
 
 	}
 
-	def __init__(self, argd, caller=None):
+	def __init__(self, argd, caller=None, stared= False):
 #		super(WxResponse, self).__init__()
 		self.argd= argd
 		self.type= argd['MsgType']
 		self.caller= None
+		if stared:
+			self.star()
 #		self.pass_to= None
 
 	def __getitem__(self, key):
@@ -108,3 +108,4 @@ class WxAuth(object):
 			return WxAuth._sendback(self.arg)
 		else:
 			return 'FUCK YOU'
+		

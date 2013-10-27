@@ -1,27 +1,66 @@
 from pymongo import MongoClient
 from functools import partial
+import wxopplugins
+
+class MongoBasedApp(object):
+	"""docstring for MongoBasedApp"""
+	_dbcfg={
+		'host': 'localhost',
+		'port': 27017,
+		'database': 'ibeidou',
+		'username': '',
+		'password': '',
+		'collection': 'operator',
+	}
+	resources= {}
+	def __init__(self, dbcfg= {}):
+		super(MongoBasedApp, self).__init__()
+		if dbcfg:
+			self._dbcfg= dict(MongoBasedApp._dbcfg, **dbcfg)
+		else:
+			self._dbcfg= MongoBasedApp._dbcfg
+
+	def _auth_db(self, uname= '', passwd= ''):
+		if (uname and passwd):
+			self._dbcfg['username']= uname
+			self._dbcfg['password']= passwd
+		else:
+			pass
+
+	def _init_db(self):
+		self.resources['conn']= MongoClient(self._dbcfg['host'],self._dbcfg['port']) #connect to your mongodb
+		self.resources['db']= self.resources['conn'][self._dbcfg['database']] #find your database
+		if (self._dbcfg['username'] and self._dbcfg['password']):
+			self.resources['db'].authenticate(self._dbcfg['username'], self._dbcfg['password']) #auth your database
+		else:
+			pass
+		self.resources['coll']= self.resources['db'][self._dbcfg['collection']] #find your collection
 
 dbcfg={
 	'host': 'localhost',
 	'port': 27017,
 	'database': 'ibeidou',
+	'username': '',
+	'password': '',
 	'collection': 'operator',
 }
-
-
-class RootOperator(object):
+class RootOperator(MongoBasedApp):
 	"""docstring for RootOperator"""
-	def __init__(self, operators=[], debug=0, dbcfg=dbcfg):
-		super(RootOperator, self).__init__()
+	def __init__(self, operators=[], debug=0, dbcfg= dbcfg):
+		super(RootOperator, self).__init__(dbcfg)
 		self.debuglevel= debug
 		self.operators={}
-		self.resources={}
 		self.plugins_post=[]
 		self.plugins_pre=[]
 		self.plugins_mid=[self.runopfunc]
 		self.init_db(dbcfg)
 		for x in operators:
 			self.register(x)
+		self.plugin(wxopplugins.pre_convert_event,timetorun='pre',coremode=False)
+		self.plugin(wxopplugins.mid_route,timetorun='mid',coremode=True)
+		self.plugin(wxopplugins.mid_reserved_words,timetorun='mid',coremode=True)
+		self.plugin(wxopplugins.mid_pseudo_shell,timetorun='mid',coremode=True)
+		self.plugin(wxopplugins.post_add_reminder,timetorun='post',coremode=True)
 
 	def __getitem__(self,key):
 		return self.operators[key]
@@ -44,9 +83,7 @@ class RootOperator(object):
 
 	def init_db(self,dbcfg):
 		self.debug('About to init Mongodb.')
-		self.resources['conn']= MongoClient(dbcfg['host'],dbcfg['port']) #connect to your mongodb
-		self.resources['db']= self.resources['conn'][dbcfg['database']] #find your database
-		self.resources['coll']= self.resources['db'][dbcfg['collection']] #find your collection
+		self._init_db()
 
 	def register(self, operator):
 		self.debug('About to register operator '+ operator.id)
@@ -55,7 +92,7 @@ class RootOperator(object):
 	def init_request(self, request):
 		try:
 			request.curoperator= self.resources['coll'].find_one({'_id':request['FromUserName']}, {'operator':1})['operator']
-		except:
+		except (TypeError, KeyError):
 			request.curoperator= None
 		finally:
 			return request
@@ -80,7 +117,7 @@ class RootOperator(object):
 				return result
 			else:
 				continue
-		return request.reply('text','虽然不知道为什么，但是您的回复击穿了整个处理系统，我真的不知道该回复您什么。。\n说点别的吧。。')
+		return request.reply('text','虽然不知道为什么，但是您的回复击穿了整个处理系统，我真的不知道该回复您什么。。\n说点别的吧。。', stared= True)
 
 	def post_answer(self, response):
 		reply= response
@@ -99,15 +136,17 @@ class Operator(object):
 		'help': 'DEBUG: Help information not provided.',
 		'app': lambda wxreq: wxreq.reply('text','DEBUG: Custom app not provided.'),
 	}
+	
 	def __init__(self, argd):
 		if 'id' not in argd:
 			raise KeyError('id')
 		super(Operator, self).__init__()
 		self.cfgd= dict(Operator.cfgd,**argd)
+	
 	def __getattr__(self, key):
 		try :
 			return self.cfgd[key]
-		except :
+		except KeyError:
 			return None
 
 	def __call__(self, req):

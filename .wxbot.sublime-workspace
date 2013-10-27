@@ -1,0 +1,731 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"def",
+				"defs	Method"
+			],
+			[
+				"if",
+				"if	If Condition"
+			],
+			[
+				"befo",
+				"before_action"
+			],
+			[
+				"atl",
+				"at_least_SCOLAR_or_redirect"
+			],
+			[
+				"jquery",
+				"jquery-ui"
+			],
+			[
+				"enab",
+				"enableSortable"
+			],
+			[
+				"jquer",
+				"jquery-ui"
+			],
+			[
+				"current",
+				"current_repeat"
+			],
+			[
+				"number",
+				"number_format"
+			],
+			[
+				"curr",
+				"current_repeat"
+			],
+			[
+				"num",
+				"numbers_to_yeld"
+			],
+			[
+				"the",
+				"the_numbers"
+			],
+			[
+				"acc",
+				"accOk"
+			],
+			[
+				"for",
+				"for	for - Yield"
+			],
+			[
+				"iter",
+				"iterCountChange"
+			],
+			[
+				"cur",
+				"curentChar"
+			],
+			[
+				"dis",
+				"distinct"
+			],
+			[
+				"ou",
+				"output_str"
+			],
+			[
+				"case_res",
+				"case_result"
+			],
+			[
+				"inp",
+				"input_lines"
+			],
+			[
+				"inpu",
+				"input_file"
+			],
+			[
+				"tab",
+				"table_of_messages"
+			],
+			[
+				"targ",
+				"target_user"
+			],
+			[
+				"tabl",
+				"table_of_channels"
+			],
+			[
+				"res",
+				"result_str"
+			],
+			[
+				"inst",
+				"instructions"
+			],
+			[
+				"clear",
+				"clear_cache"
+			],
+			[
+				"Dup",
+				"DuplicateKeyError"
+			],
+			[
+				"ExM",
+				"ExM_add_rcpt"
+			],
+			[
+				"F",
+				"FormDataError"
+			],
+			[
+				"get",
+				"get_user"
+			],
+			[
+				"add",
+				"add_user"
+			],
+			[
+				"signin",
+				"signin-form"
+			],
+			[
+				"form",
+				"fromaddr"
+			],
+			[
+				"asse",
+				"AssertionError"
+			],
+			[
+				"final",
+				"finally"
+			],
+			[
+				"time",
+				"time_to_die"
+			],
+			[
+				"sender",
+				"sender_routine"
+			],
+			[
+				"Mx",
+				"MXHostNotReachable"
+			],
+			[
+				"mail",
+				"mailCache"
+			],
+			[
+				"thread",
+				"thread_Relay"
+			],
+			[
+				"ExR",
+				"ExRelay"
+			],
+			[
+				"__",
+				"__init__"
+			],
+			[
+				"rc",
+				"rcpttos"
+			],
+			[
+				"valida",
+				"validateSession"
+			],
+			[
+				"f",
+				"for	for (…) {…}"
+			],
+			[
+				"fo",
+				"for	for (…) {…}"
+			],
+			[
+				"end",
+				"endcontacts"
+			],
+			[
+				"stat",
+				"staticSalt"
+			],
+			[
+				"de",
+				"defs	Method"
+			],
+			[
+				"signou",
+				"signoutAction"
+			],
+			[
+				"Da",
+				"IllegalData"
+			],
+			[
+				"try",
+				"try	Try/Except"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "wxclass.py",
+			"settings":
+			{
+				"buffer_size": 2857,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "ibeidou.py",
+			"settings":
+			{
+				"buffer_size": 12265,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "wxophub.py",
+			"settings":
+			{
+				"buffer_size": 1936,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "wxoperator.py",
+			"settings":
+			{
+				"buffer_size": 4308,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "wxparrot.py",
+			"settings":
+			{
+				"buffer_size": 1204,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "wxopplugins.py",
+			"settings":
+			{
+				"buffer_size": 2113,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/avastms/workspace/wanmen/cats-rails/app/controllers/taglinks_controller.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/controllers/lists_controller.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/controllers/rates_controller.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/controllers/links_controller.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/controllers/articles_controller.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/controllers/books_controller.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/controllers/comments_controller.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/helpers/application_helper.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/controllers/videos_controller.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/controllers/tags_controller.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/controllers/application_controller.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/controllers/follows_controller.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/controllers/likes_controller.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/controllers/help_controller.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/helpers/search_helper.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/helpers/help_helper.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/views/books/show.json.jbuilder",
+		"/home/avastms/workspace/wanmen/cats-rails/app/controllers/users/omniauth_callbacks_controller.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/config/application.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/views/books/new.html.erb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/views/layouts/application.html.erb",
+		"/home/avastms/workspace/wanmen/cats-rails/config/environments/development.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/config/routes.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/views/layouts/_raty.html.erb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/views/layouts/_markdown.html.erb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/views/layouts/_rails.html.erb",
+		"/home/avastms/workspace/wanmen/cats-rails/config/environments/production.rb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/views/welcome/index.html.erb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/views/videos/show.html.erb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/views/videos/new.html.erb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/views/static_pages/markdowneditor.html.erb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/views/lists/show.html.erb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/views/comments/_shares.html.erb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/views/books/show.html.erb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/views/articles/show.html.erb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/views/articles/new.html.erb",
+		"/home/avastms/workspace/wanmen/cats-rails/app/views/articles/edit.html.erb",
+		"/home/avastms/workspace/wanmen/Bootstrap-UI/lists/1.html",
+		"/home/avastms/workspace/codejam/read_p/bh.py",
+		"/home/avastms/workspace/wanmen/cats-rails/config/database.yml",
+		"/home/avastms/桌面/jgt.html",
+		"/home/avastms/workspace/progfunc/recfun/src/main/scala/recfun/Main.scala",
+		"/home/avastms/桌面/架构图.map",
+		"/home/avastms/workspace/egowork/chouchouhua/egowork.py",
+		"/home/avastms/workspace/egowork/chouchouhua/egwsite.py",
+		"/home/avastms/workspace/egowork/chouchouhua/static/draw.html",
+		"/home/avastms/workspace/egowork/chouchouhua/draw.html",
+		"/home/avastms/桌面/zhsrv.py",
+		"/home/avastms/workspace/smtpd/views/signup.tpl",
+		"/home/avastms/workspace/smtpd/views/ExM.tpl",
+		"/home/avastms/workspace/smtpd/relay.py",
+		"/home/avastms/workspace/smtpd/sbencode.py",
+		"/home/avastms/workspace/smtpd/sb.py",
+		"/home/avastms/workspace/smtpd/smtpd_new.py",
+		"/home/avastms/workspace/smtpd/smtpd.py",
+		"/usr/lib64/python3.2/smtplib.py",
+		"/usr/lib64/python3.2/smtpd.py",
+		"/home/avastms/桌面/test.py",
+		"/home/avastms/workspace/ldocean/webauth.sublime-project",
+		"/home/avastms/workspace/egowork/prototype/importcsv.py"
+	],
+	"find":
+	{
+		"height": 32.0
+	},
+	"find_in_files":
+	{
+		"height": 82.0,
+		"where_history":
+		[
+			"/home/avastms/workspace/wanmen/cats-rails",
+			"/home/avastms/workspace/wanmen/cats-rails/app",
+			"/home/avastms/workspace/wanmen/cats-rails/app/controllers",
+			"/home/avastms/workspace/wanmen/cats-rails/app/views",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"hostname",
+			"authencate",
+			"except",
+			"star",
+			"MongoClient",
+			"_to \"/manage\"",
+			"\"/manage\"",
+			"admin",
+			"authenticate_",
+			"authenticate_#",
+			"authenticate_user",
+			"user_auth",
+			".css",
+			".js",
+			"/assets/",
+			".map",
+			"jquery-1",
+			"[",
+			"curentDepth",
+			"curentChar",
+			"wzyy",
+			"la",
+			"code",
+			"process_message",
+			"_map",
+			":\n",
+			"self.received_data",
+			"collect_incoming_data",
+			"received_lines",
+			"utf-8",
+			"bytes",
+			"ascii",
+			"async_chat.push",
+			"data_size_limit",
+			"release",
+			"MXHostNotReachable",
+			"clear_cache",
+			"received",
+			"send",
+			"bosp",
+			"ExAdmin",
+			"form",
+			"    <",
+			"get_real_addr",
+			"valid_rcpt_func",
+			"received",
+			"finalAddr",
+			"resources['rcpt']",
+			"socket.error",
+			"sendqueue",
+			"self.fqdn",
+			"_getaddr",
+			"self._getaddr",
+			"_getparams",
+			"_getaddr",
+			"get_angle_addr",
+			"get_addr_spec",
+			"ehlo",
+			"smtp_",
+			"EHLO",
+			"ETRN",
+			"EHLO",
+			"ETRN",
+			"method",
+			"etrn",
+			"_getaddr",
+			"get_angle_addr",
+			"get_addr_spec",
+			"rcpt",
+			"ehlo",
+			"__getaddr",
+			"dns",
+			"process",
+			"peer",
+			"received",
+			"self.peer",
+			"form",
+			"_i",
+			"onlyHave",
+			"select",
+			"bson",
+			"insert_comment",
+			"publish_comm",
+			"typical_find"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"_to help_manage_path",
+			"/public/assets/",
+			"checkForm"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 3,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "wxclass.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2857,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2788,
+								2788
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1260.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "ibeidou.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12265,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6610,
+								6610
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3735.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "wxophub.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1936,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								971,
+								971
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 720.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "wxoperator.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4308,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								662,
+								662
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 180.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "wxparrot.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1204,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								679,
+								679
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 13.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "wxopplugins.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2113,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1927,
+								1927
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 270.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"project": ".wxbot.sublime-project",
+	"replace":
+	{
+		"height": 58.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 450.0,
+		"selected_items":
+		[
+		],
+		"width": 342.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 188.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

@@ -11,7 +11,7 @@ def post_add_reminder(rootop,wxres):	#Default plugin, DO NOT REMOVE !!
 		if wxres.caller:
 			try:
 				head= rootop[wxres.caller].name+':\n------------\n'
-			except:
+			except (TypeError, KeyError):
 				head= wxres.caller+':\n-----------\n'
 		else:
 			head= ''
@@ -28,7 +28,7 @@ def mid_route(rootop,wxreq):	#Default plugin, DO NOT REMOVE !!
 	else:
 		try:
 			goto= rootop.operators[wxreq.curoperator].route[wxreq['Content'].rstrip()]
-		except:
+		except (TypeError, KeyError):
 			pass
 	if goto:
 		return wxreq.reply('text', rootop.transfer(wxreq['FromUserName'],goto))
@@ -43,7 +43,7 @@ evil_reservations={
 def mid_reserved_words(rootop,wxreq):	#Default plugin, DO NOT REMOVE !!
 	try:
 		return evil_reservations[wxreq['Content'].rstrip()](rootop,wxreq)
-	except:
+	except (TypeError, KeyError):
 		return None
 
 # use this format: #cmd> your arguments 
@@ -53,11 +53,11 @@ def mid_pseudo_shell(rootop,wxreq):
 			return None
 		else:
 			pass
-	except:
+	except (TypeError, KeyError):
 		return None
 	cmd= wxreq['Content'][1:].partition('>')
 	wxreq['Content']= cmd[2].strip()
 	try:
 		return rootop[cmd[0].strip()](wxreq)
-	except:
+	except :
 		return wxreq.reply('text','Pseudo shell exception.')
